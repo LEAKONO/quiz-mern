@@ -1,6 +1,5 @@
 const Quiz = require('../models/Quiz');
 
-// Create a quiz
 exports.createQuiz = async (req, res) => {
   try {
     const quiz = await Quiz.create({
@@ -77,7 +76,7 @@ exports.submitQuiz = async (req, res) => {
     const quiz = await Quiz.findById(req.params.id);
     if (!quiz) return res.status(404).json({ message: 'Quiz not found' });
 
-    const userAnswers = req.body.answers; // Expect { "0": "A", "1": "B", ... }
+    const userAnswers = req.body.answers; 
     let score = 0;
 
     quiz.questions.forEach((q, index) => {
