@@ -3,8 +3,9 @@ import Navbar from './components/Navbar';
 import Register from './pages/Register';
 import Login from './pages/Login';
 import Dashboard from './pages/Dashboard';
-import TakeQuiz from './pages/TakeQuiz';
-import Results from './pages/Results';
+import TakeQuiz from './quizzes/TakeQuiz'; // Updated path for TakeQuiz
+import Results from './quizzes/Results';   // Updated path for Results
+;
 import { AuthProvider } from './context/AuthContext';
 
 function App() {
