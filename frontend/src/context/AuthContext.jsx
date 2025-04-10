@@ -1,18 +1,41 @@
-import { createContext, useState, useEffect } from 'react';
+import { createContext, useState, useEffect, useContext } from 'react';
 
 export const AuthContext = createContext();
+
+export const useAuth = () => {
+  return useContext(AuthContext);
+};
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(() => {
     const token = localStorage.getItem('token');
-    return token ? JSON.parse(atob(token.split('.')[1])) : null;
+    if (token) {
+      try {
+        // Decode the JWT token to extract the user info
+        return JSON.parse(atob(token.split('.')[1]));
+      } catch (error) {
+        console.error("Error decoding token:", error);
+        return null; // If there's an error, return null
+      }
+    }
+    return null;
   });
 
   const login = (token) => {
-    localStorage.setItem('token', token);
-    const decoded = JSON.parse(atob(token.split('.')[1]));
-    setUser(decoded);
+    if (token && token.split('.').length === 3) {
+      localStorage.setItem('token', token);
+      try {
+        const decoded = JSON.parse(atob(token.split('.')[1]));
+        setUser(decoded);
+      } catch (error) {
+        console.error("Error decoding token:", error);
+        setUser(null);  
+      }
+    } else {
+      console.error("Invalid token format:", token);
+    }
   };
+  
 
   const logout = () => {
     localStorage.removeItem('token');
