@@ -13,7 +13,6 @@ exports.createQuiz = async (req, res) => {
   }
 };
 
-// Get all quizzes
 exports.getAllQuizzes = async (req, res) => {
   try {
     const quizzes = await Quiz.find().populate('user', 'username email');
@@ -23,7 +22,6 @@ exports.getAllQuizzes = async (req, res) => {
   }
 };
 
-// Get quiz by ID
 exports.getQuizById = async (req, res) => {
   try {
     const quiz = await Quiz.findById(req.params.id).populate('user', 'username');
@@ -34,13 +32,11 @@ exports.getQuizById = async (req, res) => {
   }
 };
 
-// Update quiz
 exports.updateQuiz = async (req, res) => {
   try {
     const quiz = await Quiz.findById(req.params.id);
     if (!quiz) return res.status(404).json({ message: 'Quiz not found' });
 
-    // Optional: Only allow quiz owner to update
     if (quiz.user.toString() !== req.user._id.toString()) {
       return res.status(403).json({ message: 'Not authorized to update this quiz' });
     }
